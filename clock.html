@@ -11,6 +11,14 @@
 
   <input type="time", id="alarmTime">
   <button onclick="setAlarm()">Set Alarm</button>
+  <audio id="alarmSound" src="https://www.soundjay.com/misc_c2026/sounds/bell-ringing-01c.mp3"></audio>
+
+  <div id="alarmBox" style="display:none; font-size:40px; color:red;">
+    ALARM!
+  <br><br>
+
+  <button onclick="stopAlarm()">Stop</button>
+</div>
 
 
 <script>
@@ -18,6 +26,8 @@
   let alarm = "";
 
   function updateTime() {
+    Notification.requestPermission()
+
      let now = new Date();
 
     let time = now.toLocaleTimeString();
@@ -30,9 +40,26 @@
      let currentTime = now.toTimeString().slice(0, 5);
 
     if (alarm === currentTime) {
-      alert("Alarm is Ringing!");
+      //alert("Alarm is Ringing!");
+      let sound = document.getElementById("alarmSound");
+      sound.loop = true;
+      sound.play();
+      if (Notification.permission === "granted") {
+        new Notification("Alarm Ringing!");
+      }
+      document.getElementById("alarmBox").style.display = "block";
+
       alarm = ""; //change it back to neutral agin
     }
+  }
+
+  function stopAlarm() {
+    let sound = document.getElementById("alarmSound");
+
+    sound.pause();
+    sound.currentTime=0;
+
+    document.getElementById("alarmBox").style.display =  "none"
   }
 
   function setAlarm() {
