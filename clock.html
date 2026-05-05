@@ -18,6 +18,7 @@
   <br><br>
 
   <button onclick="stopAlarm()">Stop</button>
+  <button id="snoozeBtn" onclick="snooze()" style="display: none">Snooze +5</button>
 </div>
 
 
@@ -64,10 +65,32 @@ document.addEventListener("click", function unlockAudio() {
         new Notification("Alarm Ringing!");
       }
       document.getElementById("alarmBox").style.display = "block";
+      document.getElementById("snoozeBtn").style.display = "inline"
 
       alarm = ""; //change it back to neutral agin
     }
+  } 
+
+  function snooze() {
+    let now = new Date();
+
+    now.setMinutes(now.getMinutes() + 5);
+
+     let hours = now.getHours().toString().padStart(2, '0');
+    let minutes = now.getMinutes().toString().padStart(2, '0');
+
+    alarm = hours + ":" + minutes;
+
+    let sound = document.getElementById("alarmSound");
+    sound.pause();
+    sound.currentTime(0);
+
+    document.getElementById("snoozeBtn").style.display = "none";
+
+    alert("snoozed to" + alarm);
+
   }
+
 
   function stopAlarm() {
     let sound = document.getElementById("alarmSound");
@@ -75,7 +98,8 @@ document.addEventListener("click", function unlockAudio() {
     sound.pause();
     sound.currentTime=0;
 
-    document.getElementById("alarmBox").style.display =  "none"
+    document.getElementById("alarmBox").style.display =  "none";
+    document.getElementById("snoozeBtn").style.display = "none";
   }
 
   function setAlarm() {
