@@ -9,6 +9,10 @@
   <h1 id="time">0:00:00</h1>
   <h2 id="date">0/00/0000</h2>
 
+  <input type="time", id="alarmTime">
+  <button onclick="setAlarm()">Set Alarm</button>
+
+
   <script>
     let now = new Date();
     let time = now.toLocaleTimeString();
@@ -34,9 +38,17 @@
 
     }
 
-    updateDate()
+    updateDate();
     // the line below is mostly used by Intense user, I hope no one uses this for 1 whole day or at midnight but lets keep it, why not.
-    setInterval(updateDate, 100000) // every 100 seconds
+    setInterval(updateDate, 100000); // every 100 seconds
+
+    let alarm = ""
+
+    function setAlarm() {
+        alarm = document.getElementById("alarmTime").value;
+        alert("Alarm set for" + alarm);
+
+    }
 
   </script>
 
