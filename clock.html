@@ -9,11 +9,11 @@
   <h1 id="time">0:00:00</h1>
   <h2 id="date">0/00/0000</h2>
 
-  <input type="time", id="alarmTime">
+  <input type="time" id="alarmTime">
   <button onclick="setAlarm()">Set Alarm</button>
-  <audio id="alarmSound" src="https://www.soundjay.com/misc_c2026/sounds/bell-ringing-01c.mp3"></audio>
+  <audio id="alarmSound" src="alarm.mp3"></audio>
 
-  <div id="alarmBox" style="display:none; font-size:40px; color:red;">
+  <div id="alarmBox" style="display:none; font-size:20px; color:red;">
     ALARM!
   <br><br>
 
@@ -21,13 +21,29 @@
 </div>
 
 
+
 <script>
     // refactored and made it into one function that displays both time and date
   let alarm = "";
 
-  function updateTime() {
-    Notification.requestPermission()
+  // had to do a lot of reasearch, hopefully it works.
+document.addEventListener("click", function unlockAudio() {
+    let sound = document.getElementById("alarmSound");
 
+    sound.play()
+        .then(() => {
+            sound.pause();
+            sound.currentTime = 0;
+        })
+        .catch(() => {});
+
+    document.removeEventListener("click", unlockAudio);
+});
+  
+
+
+  function updateTime() {
+    
      let now = new Date();
 
     let time = now.toLocaleTimeString();
@@ -43,7 +59,7 @@
       //alert("Alarm is Ringing!");
       let sound = document.getElementById("alarmSound");
       sound.loop = true;
-      sound.play();
+      sound.play().catch(err => console.warn("play() did not work") );
       if (Notification.permission === "granted") {
         new Notification("Alarm Ringing!");
       }
@@ -64,7 +80,10 @@
 
   function setAlarm() {
     alarm = document.getElementById("alarmTime").value;
+    Notification.requestPermission();
+    
     alert("Alarm set for " + alarm);
+
   }
 
   updateTime();
