@@ -13,44 +13,36 @@
   <button onclick="setAlarm()">Set Alarm</button>
 
 
-  <script>
-    let now = new Date();
+<script>
+    // refactored and made it into one function that displays both time and date
+  let alarm = "";
+
+  function updateTime() {
+     let now = new Date();
+
     let time = now.toLocaleTimeString();
+    
+    let date = now.toLocaleDateString();
 
     document.getElementById("time").innerText = time;
+    document.getElementById("date").innerText = date;
 
-    //just realized instead of two funcs i could make one but too late, keep it like that.
-    function updateTime() {
-        let now = new Date();
-        let time = now.toLocaleTimeString();
+     let currentTime = now.toTimeString().slice(0, 5);
 
-        document.getElementById("time").innerText = time;
-    }   
-
-    updateTime();
-    setInterval(updateTime, 1000);
-
-    function updateDate() {
-        let now = new Date
-        let date = now.toLocaleDateString()
-
-        document.getElementById("date").innerText = date;
-
+    if (alarm === currentTime) {
+      alert("Alarm is Ringing!");
+      alarm = ""; //change it back to neutral agin
     }
+  }
 
-    updateDate();
-    // the line below is mostly used by Intense user, I hope no one uses this for 1 whole day or at midnight but lets keep it, why not.
-    setInterval(updateDate, 100000); // every 100 seconds
+  function setAlarm() {
+    alarm = document.getElementById("alarmTime").value;
+    alert("Alarm set for " + alarm);
+  }
 
-    let alarm = ""
-
-    function setAlarm() {
-        alarm = document.getElementById("alarmTime").value;
-        alert("Alarm set for" + alarm);
-
-    }
-
-  </script>
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>
 
 </body>
 </html>
